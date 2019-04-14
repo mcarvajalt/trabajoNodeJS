@@ -1,0 +1,54 @@
+{{>header}}
+<div id="createUser" class="container">
+<h2>Formulario para crear un nuevo curso</h2>
+<p>utilice este formulario para ingresar la informacion del usuario</p>
+    <div class="col-xs-12 col-sm-10 col-md-12 col-sm-offset-1 col-md-offset 2">
+        <br>
+        <br>
+        {{titulo}}
+            <form action="/crearCurso" method="get">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="Nombre">Nombre Curso</label>
+                        <input type="text" class="form-control"  name="nombre">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="Codigo">Codigo Curso</label>
+                        <input type="text" class="form-control"  name="idCurso">
+                    </div>
+                </div>
+                 <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="des">Descripcion Curso</label>
+                        <input type="text" class="form-control"  name="descripcion">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="valor">Valor Curso</label>
+                        <input type="text" class="form-control"  name="valor">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="mod">Modalidad</label>
+                        <input type="text" class="form-control"  name="modalidad">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="int">Intensidad Horaria</label>
+                        <input type="text" class="form-control"  name="intensidadHoraria">
+                    </div>
+                </div>
+                <button class="btn btn-success">Guardar</button>
+            </form>
+    </div>
+</div>
+{{{crearCurso nombre idCurso descripcion valor modalidad intensidadHoraria estado}}}
+    </div>
+</div>
+
+{{>footer}}
