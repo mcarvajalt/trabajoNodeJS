@@ -1,9 +1,31 @@
 const hbs = require('hbs');
 const Cursos = require('./models/cursos');
 
-hbs.registerHelper('listarIncribir',(listado)=>{
-	listaCursos = require('./usuariosCursos/CursosUsuarios.json');
-		let texto = `<form action="/eliminarCurEs" method="get">
+hbs.registerHelper('listarIncritosCurso',(listado)=>{
+	let texto = `<form action="/eliminarCur" method="get">
+	<table class="table table-striped table-hover">
+	<thead class="thdead-dark">
+	<th>Nombre Curso</th>
+	<th>Cedula Estudiante</th>
+	<th>Correo</th>
+	</thead>
+	<tbody>`;
+console.log(listado)
+listado.forEach((cursoEstudiante) =>{
+		texto = texto +
+		`<tr> 
+		<td> ${cursoEstudiante.nombreCurso}</td>
+		<td> ${cursoEstudiante.documentoDeIdentidad }</td>
+		<td> ${cursoEstudiante.correo }</td>
+		<td><input type="hidden" class="btn btn-danger" name="nombreCurso" value="${cursoEstudiante.nombreCurso}"></input></td>
+		<td><button class="btn btn-danger" name="documentoDeIdentidad" value="${cursoEstudiante.documentoDeIdentidad}">Eliminar</button></td>`;
+	});
+	texto = texto + '</tr></tbody></table><form>'
+
+	return texto;
+});
+hbs.registerHelper('listarIncritos',(listado)=>{
+		let texto = `<form action="/eliminarCur" method="get">
 		<table class="table table-striped table-hover">
 		<thead class="thdead-dark">
 		<th>Nombre Curso</th>
@@ -19,15 +41,12 @@ hbs.registerHelper('listarIncribir',(listado)=>{
 			<td> ${cursoEstudiante.nombreCurso }</td>
 			<td> ${cursoEstudiante.correo }</td>
 			<td><input type="hidden" class="btn btn-danger" name="nombreCurso" value="${cursoEstudiante.nombreCurso}"></input></td>
-		    <td><button class="btn btn-danger" name="documentoDeIdentidad" value="${cursoEstudiante.documentoDeIdentidad}">Eliminar</button></td>`;
+			<td><button class="btn btn-danger" name="documentoDeIdentidad" value="${cursoEstudiante.documentoDeIdentidad}">Eliminar</button></td>`;
 		});
 		texto = texto + '</tr></tbody></table><form>'
 	
 		return texto;
-	});
-/*hbs.registerHelper('obtenerProemdio', (nota1, nota2)=>{
-	return (nota1+nota2)/2
-})*/
+});
 hbs.registerHelper('crearUsuario',(documentoDeIdentidad, nombre,correo, telefono)=>{
 	let texto = '';
 		console.log(documentoDeIdentidad);
@@ -73,29 +92,12 @@ hbs.registerHelper('listarCursos',(listado)=>{
 			<td>${cursos.descripcion}</td>
 			<td>${cursos.estado}</td>
 			<td>${cursos.valor}</td>
-			<td><button class="btn btn-primary" name="nombre" value="${cursos.nombre}">Modificar</button></td>
-			</tr>`;
-		})
-		texto = texto + '</tbody></table></form>'
-		return texto;
-})
-
-hbs.registerHelper('listarCursosAbiertos',(listado)=>{
-	let texto = ` <form action="/infoUnCurso" method="get">
-		<table class="table table-striped table-hover">
-		<thead class="thdead-dark">
-		<th>Nombre de curso</th>
-		<th>Decripcion</th>
-		<th>Valor</th>
-		</thead>
-		<tbody>`;
-		listado.forEach(cursos =>{
-			texto = texto +
-			`<tr>
-			<td>${cursos.nombre} </td>
-			<td>${cursos.descripcion}</td>
-			<td>${cursos.valor}</td>
-			<td><button class="btn btn-danger" name="nombre" value="${cursos.nombre}">Mas informacion</button>
+			<td><button class="btn btn-success" name="nombreCurso" value="${cursos.nombre}">Usuarios en el Curso</button></td>
+			<td>
+				<form action="/modificar" method="get">
+					<button class="btn btn-primary" name="nombre" value="${cursos.nombre}">Modificar</button>
+				</form>
+			</td>
 			</tr>`;
 		})
 		texto = texto + '</tbody></table></form>'
@@ -125,6 +127,49 @@ hbs.registerHelper('infoCurso',(listado)=>{
 		texto = texto + '</tbody></table></form>'
 		return texto;
 })
+hbs.registerHelper('modificarCursos',(listado)=>{
+	let texto = `<form action="/modificarCurso" method="get">
+    <p>Datos Actuales curso</p>`;
+		listado.forEach(cursos =>{
+			texto = texto +
+			`<tr>
+				<td>Codigo del Curso: ${cursos.idCurso}</td>
+				<td>Nombre del Curso: ${cursos.nombre}</td>
+				<td> Estado del Curso: ${cursos.estado}</td>
+			<div class="form-row">
+				<div class="form-group col-md-6">
+					<label for="mod">Nuevo Estado</label>
+						<input type="text" name="estado" id="estado" value="${cursos.estado}">
+						<button class="btn btn-primary" name="nombre" value="${cursos.nombre}">Modificar</button>
+				</div>
+			</div>
+			</tr>`;
+		})
+		texto = texto + '</tbody></table></form>'
+		return texto;
+})
+hbs.registerHelper('listarCursosAbiertos',(listado)=>{
+	let texto = ` <form action="/infoUnCurso" method="get">
+		<table class="table table-striped table-hover">
+		<thead class="thdead-dark">
+		<th>Nombre de curso</th>
+		<th>Decripcion</th>
+		<th>Valor</th>
+		</thead>
+		<tbody>`;
+		listado.forEach(cursos =>{
+			texto = texto +
+			`<tr>
+			<td>${cursos.nombre} </td>
+			<td>${cursos.descripcion}</td>
+			<td>${cursos.valor}</td>
+			<td><button class="btn btn-success" name="nombre" value="${cursos.nombre}">Mas informacion</button>
+			</tr>`;
+		})
+		texto = texto + '</tbody></table></form>'
+		return texto;
+})
+
 hbs.registerHelper('verUsuarios',(listado)=>{
 	let texto = ` <form action="/eliminar" method="get">
 		<table class="table table-striped table-hover">

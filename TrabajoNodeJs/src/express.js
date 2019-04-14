@@ -164,6 +164,18 @@ app.get('/infoUnCurso',(req,res)=>{
 		});
 	})
 })
+app.get('/infoCurso',(req,res)=>{
+	UsuarioCursos.find({nombreCurso: req.query.nombreCurso}).exec((err,respuesta)=>{
+		
+		if(err){
+			return console.log(err)
+		}
+		console.log(respuesta);
+		res.render('usuariosIncritosCurso',{
+			listado: respuesta
+		});
+	})
+})
 app.get('/verInscritosCursos',(req,res)=>{
 	UsuarioCursos.find({}).exec((err,respuesta)=>{
 		if(err){
@@ -187,12 +199,36 @@ app.get('/eliminar',(req,res)=>{
 	})
 })
 app.get('/modificar',(req,res)=>{
-	Usuario.findOneAndUpdate({nombreCurso:req.query.documentoDeIdentidad}, req.body).exec((err, resultados)=>{
-		Usuario.find({}).exec((err,respuesta)=>{
+	Cursos.find({nombre: req.query.nombre}).exec((err,respuesta)=>{
 			if(err){
 				return console.log(err)
 			}
-			res.render('modificar')
+			res.render('modificarCurso',{
+				listado:respuesta
+			})
+	})
+})
+app.get('/modificarCurso',(req,res)=>{
+	Cursos.findOneAndUpdate({nombre: req.query.nombre}, req.body,{new:true},(err, resultados)=>{
+		Cursos.find({}).exec((err,respuestaLista)=>{
+			if(err){
+				return console.log(err)
+			}
+			res.render('verCursos',{
+				listado: respuestaLista
+			})
+		})
+	})
+})
+app.get('/eliminarCur',(req,res)=>{
+	UsuarioCursos.findOneAndDelete({documentoDeIdentidad:req.query.documentoDeIdentidad,nombreCurso: req.query.nombreCurso}, req.body).exec((err, resultados)=>{
+		UsuarioCursos.find({nombreCurso: req.query.nombreCurso}).exec((err,respuesta)=>{
+			if(err){
+				return console.log(err)
+			}
+			res.render('usuariosIncritosCurso',{
+				listado:respuesta
+			})
 		})
 	})
 })
@@ -203,6 +239,18 @@ app.get('/eliminarCurEs',(req,res)=>{
 				return console.log(err)
 			}
 			res.render('verInscritos',{
+				listado:respuesta
+			})
+		})
+	})
+})
+app.get('/eliminarUnCurso',(req,res)=>{
+	Cursos.findOneAndDelete({nombre: req.query.nombre}, req.body).exec((err, resultados)=>{
+		Cursos.find({}).exec((err,respuesta)=>{
+			if(err){
+				return console.log(err)
+			}
+			res.render('verCursos',{
 				listado:respuesta
 			})
 		})
