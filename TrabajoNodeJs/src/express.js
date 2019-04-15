@@ -320,8 +320,10 @@ mongoose.connect('mongodb://localhost:27017/univercidad', {useNewUrlParser: true
 	}
 	console.log("Conectado")
 });
+const port = process.env.PORT||3000;
 //app.use(express.static(__dirname + '/public'))
 console.log(__dirname);
-app.listen(4000,()=>{
-	console.log('escucha por el puerto');
+app.listen(port,()=>{
+	console.log('escucha por el puerto ' + port);
 });
+
