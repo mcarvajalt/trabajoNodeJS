@@ -60,13 +60,43 @@ app.get('/login',(req,res)=>{
 	});
 })
 app.get('/crearUsuario',(req,res)=>{
-	console.log(req.query);
+	/*console.log(req.query);
 	res.render('crearUsuario',{
 		documentoDeIdentidad: req.query.documentoDeIdentidad,
 		nombre: req.query.nombre,
 		correo: req.query.correo,
 		telefono: req.query.telefono,
-	});
+	});*/
+	let usuario = new Usuario({
+		documentoDeIdentidad:req.query.documentoDeIdentidad,
+		nombre: req.query.nombre,
+		correo: req.query.correo,
+		telefono: req.query.telefono,
+		rol: 'aspirante'
+	})
+	console.log( usuario);
+	Usuario.findOne({documentoDeIdentidad:req.query.documentoDeIdentidad}).exec((err,respuesta)=>{
+		if(respuesta!= null){
+			return console.log('No se puede insertar')
+		}
+		else{
+			usuario.save((err, resultado)=>{
+				if(err){
+					res.render('crearUsuario', {
+						titulo: "Error No se pudo guardar",
+					})
+				}else{
+					Cursos.find({estado:'disponibles'}).exec((err,respuestaCur)=>{
+						res.render('verCursosAbiertos',{
+							listado: respuestaCur
+						});
+					})
+				}
+				
+				console.log('Se guardo exitosamente')
+			});
+		}
+	})
 })
 app.get('/crearCurso',(req,res)=>{
 	console.log(req.query);
